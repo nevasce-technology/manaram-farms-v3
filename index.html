@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en-US">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Manaram Farm — Choose Your View</title>
+  <meta name="description"
+    content="Manaram Farm, presented two ways: a calm editorial site and a cinematic, motion-forward one. Pick your view." />
+
+  <link rel="icon" href="images/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&amp;family=Bodoni+Moda:ital,opsz,wght@0,6..96,500;0,6..96,600;0,6..96,700;1,6..96,500;1,6..96,600&amp;display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="hub.css" />
+</head>
+
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="hub-header">
+    <img class="hub-logo" src="images/logo-blue.png" alt="Manaram Farm" width="593" height="180" />
+  </header>
+
+  <main id="main" class="hub-main">
+    <div class="hub-intro reveal" data-reveal>
+      <h1 class="text-balance">Two ways to walk the farm.</h1>
+      <p class="text-pretty">
+        Same story, same products, same photographs — presented two different ways while we decide
+        which one fits Manaram best. Pick whichever you'd like to look around in.
+      </p>
+    </div>
+
+    <div class="hub-cards">
+      <a class="hub-card hub-card--one reveal" data-reveal href="theme-1/index.html">
+        <span class="hub-card-media">
+          <picture>
+            <source srcset="images/hero-m.webp" type="image/webp" />
+            <img src="images/hero-mountain.jpg" alt="" width="2200" height="1466" loading="lazy" />
+          </picture>
+        </span>
+        <span class="hub-card-body">
+          <span class="hub-card-eyebrow">Theme 1</span>
+          <span class="hub-card-title">The Editorial Site</span>
+          <span class="hub-card-desc">
+            Calm, paper-white, restrained. Bodoni Moda headlines, a quiet scroll-reveal rhythm and one
+            signature scroll cue.
+          </span>
+          <span class="hub-card-cta">
+            <span>Enter the Editorial Site</span>
+            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+              <path d="M5 19 19 5M9 5h10v10" />
+            </svg>
+          </span>
+        </span>
+      </a>
+
+      <a class="hub-card hub-card--two reveal" data-reveal href="theme-2/index.html">
+        <span class="hub-card-media">
+          <picture>
+            <source srcset="images/cows-pasture.webp" type="image/webp" />
+            <img src="images/cows-pasture.jpg" alt="" width="1400" height="1050" loading="lazy" />
+          </picture>
+        </span>
+        <span class="hub-card-body">
+          <span class="hub-card-eyebrow">Theme 2</span>
+          <span class="hub-card-title">The Motion Site</span>
+          <span class="hub-card-desc">
+            Deep-blue and cinematic. Kinetic type, parallax scrollytelling and a tilting product grid,
+            built animation-first.
+          </span>
+          <span class="hub-card-cta">
+            <span>Enter the Motion Site</span>
+            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+              <path d="M5 19 19 5M9 5h10v10" />
+            </svg>
+          </span>
+        </span>
+      </a>
+    </div>
+  </main>
+
+  <footer class="hub-footer">
+    <p>&copy; <span id="year"></span> Manaram Farm. All rights reserved.</p>
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,198 @@
+/* ==========================================================================
+   Manaram Farm — Hub / theme chooser
+   Neutral front door: borrows Theme 1's real brand system (Signal Blue,
+   Ink, White, Bodoni Moda) so it reads as official Manaram Farm rather
+   than favoring either themed experience.
+   ========================================================================== */
+
+:root {
+  --brand-blue: oklch(0.538 0.140 247);
+  --blue-deep: oklch(0.28 0.09 250);
+  --paper-bg: oklch(0.985 0.004 250);
+  --surface: oklch(0.95 0.008 250);
+  --ink: oklch(0.15 0.02 250);
+  --muted-ink: oklch(0.46 0.02 250);
+  --line: oklch(0.3 0.02 250 / 0.14);
+  --white: oklch(1 0 0);
+
+  --font-serif: "Bodoni Moda", Didot, "Iowan Old Style", Georgia, serif;
+  --font-sans: "Instrument Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+  --space-2xs: 0.5rem;
+  --space-xs: 0.75rem;
+  --space-sm: 1.25rem;
+  --space-md: 2rem;
+  --space-lg: 3.5rem;
+  --space-xl: 6rem;
+
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --dur-base: 250ms;
+  --dur-slow: 450ms;
+
+  --shadow-lift: 0 16px 36px oklch(0.22 0.02 250 / 0.16);
+  color-scheme: light;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+body { margin: 0; }
+img, picture, svg { display: block; max-width: 100%; }
+h1, p { margin: 0; }
+a { color: inherit; text-decoration: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+body {
+  font-family: var(--font-sans);
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  color: var(--ink);
+  background: var(--paper-bg);
+  font-optical-sizing: auto;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -100%;
+  background: var(--ink);
+  color: var(--white);
+  padding: 0.75rem 1.25rem;
+  z-index: 10;
+  transition: top var(--dur-base) var(--ease-out-quart);
+}
+.skip-link:focus { top: 1rem; }
+
+.text-balance { text-wrap: balance; }
+.text-pretty { text-wrap: pretty; }
+
+.hub-header {
+  padding: var(--space-md) var(--space-md) 0;
+}
+.hub-logo { height: 32px; width: auto; }
+
+.hub-main {
+  flex: 1;
+  max-width: 72rem;
+  width: 100%;
+  margin: 0 auto;
+  padding: var(--space-xl) var(--space-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+}
+
+.hub-intro {
+  max-width: 42rem;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: hub-in var(--dur-slow) var(--ease-out-quart) forwards;
+}
+.hub-intro h1 {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  font-size: clamp(2.25rem, 1.6rem + 3vw, 3.75rem);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  margin-bottom: var(--space-sm);
+}
+.hub-intro p { color: var(--muted-ink); font-size: 1.125rem; max-width: 52ch; }
+
+@keyframes hub-in { to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .hub-intro { opacity: 1; transform: none; animation: none; }
+}
+
+.hub-cards {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-md);
+}
+
+.hub-card {
+  display: flex;
+  flex-direction: column;
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  box-shadow: none;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: hub-in var(--dur-slow) var(--ease-out-quart) forwards;
+  transition: box-shadow var(--dur-slow) var(--ease-out-quart), transform var(--dur-slow) var(--ease-out-quart);
+}
+.hub-card--one { animation-delay: 90ms; }
+.hub-card--two { animation-delay: 180ms; }
+.hub-card:hover { box-shadow: var(--shadow-lift); transform: translateY(-4px); }
+.hub-card:focus-visible { outline: 2px solid var(--brand-blue); outline-offset: 3px; }
+
+.hub-card-media {
+  display: block;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: var(--ink);
+}
+.hub-card-media img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform var(--dur-slow) var(--ease-out-quart);
+}
+.hub-card:hover .hub-card-media img { transform: scale(1.045); }
+
+.hub-card-body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.35rem;
+  padding: var(--space-md);
+}
+.hub-card-eyebrow {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--brand-blue);
+}
+.hub-card-title {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  font-size: clamp(1.4rem, 1.2rem + 1vw, 1.9rem);
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+.hub-card-desc { color: var(--muted-ink); font-size: 0.975rem; margin-bottom: var(--space-xs); }
+.hub-card-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 700;
+  color: var(--ink);
+  padding-top: 0.35rem;
+  border-top: 1px solid var(--line);
+  width: 100%;
+}
+.hub-card-cta svg { fill: none; stroke: currentColor; stroke-width: 2; transition: transform var(--dur-base) var(--ease-out-quart); }
+.hub-card:hover .hub-card-cta svg { transform: translate(3px, -3px); }
+
+@media (min-width: 760px) {
+  .hub-cards { grid-template-columns: 1fr 1fr; }
+}
+
+.hub-footer {
+  padding: var(--space-md);
+  text-align: center;
+  color: var(--muted-ink);
+  font-size: 0.8125rem;
+}
