@@ -12,16 +12,26 @@
   // Mobile nav
   const menuToggle = document.getElementById("menu-toggle");
   const mobileNav = document.getElementById("mobile-nav");
+  const mobileNavClose = mobileNav.querySelector(".mobile-nav-close");
+  const focusableSelector = 'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
-  const closeMenu = () => {
+  const closeMenu = (restoreFocus = true) => {
     menuToggle.setAttribute("aria-expanded", "false");
+    menuToggle.setAttribute("aria-label", "Open menu");
     mobileNav.classList.remove("is-open");
+    mobileNav.setAttribute("aria-hidden", "true");
+    mobileNav.inert = true;
     document.body.style.overflow = "";
+    if (restoreFocus) menuToggle.focus();
   };
   const openMenu = () => {
     menuToggle.setAttribute("aria-expanded", "true");
+    menuToggle.setAttribute("aria-label", "Close menu");
+    mobileNav.removeAttribute("aria-hidden");
+    mobileNav.inert = false;
     mobileNav.classList.add("is-open");
     document.body.style.overflow = "hidden";
+    mobileNavClose.focus();
   };
 
   menuToggle.addEventListener("click", () => {
@@ -29,13 +39,26 @@
     isOpen ? closeMenu() : openMenu();
   });
 
-  mobileNav.querySelectorAll("a, button").forEach((el) => {
-    el.addEventListener("click", closeMenu);
-  });
+  mobileNavClose.addEventListener("click", () => closeMenu());
+  mobileNav.querySelectorAll("a").forEach((el) => el.addEventListener("click", () => closeMenu(false)));
 
   document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") closeMenu();
+    if (e.key === "Escape" && mobileNav.classList.contains("is-open")) closeMenu();
+    if (e.key !== "Tab" || !mobileNav.classList.contains("is-open")) return;
+    const focusable = [...mobileNav.querySelectorAll(focusableSelector)].filter((el) => !el.inert);
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
+    }
   });
+  window.addEventListener("resize", () => {
+    if (window.innerWidth > 900 && mobileNav.classList.contains("is-open")) closeMenu(false);
+  }, { passive: true });
 
   // Footer year
   const yearEl = document.getElementById("year");
@@ -47,7 +70,8 @@
     const track = document.getElementById("product-track");
     const cards = [...track.querySelectorAll(".product-card")];
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const pixelsPerSecond = 150;
+    const coarsePointer = window.matchMedia("(pointer: coarse)");
+    const pixelsPerSecond = 55;
     let animationFrame = 0;
     let lastTimestamp = 0;
     let carouselIsVisible = !("IntersectionObserver" in window);
@@ -70,7 +94,8 @@
       if (width > 0 && track.scrollLeft >= width) track.scrollLeft %= width;
     };
 
-    const canAnimate = () => !reducedMotion.matches && !document.hidden && carouselIsVisible &&
+    const canAnimate = () => !reducedMotion.matches && !coarsePointer.matches && window.innerWidth > 900 &&
+      !document.hidden && carouselIsVisible &&
       !pointerIsDown && !carousel.matches(":hover") && !carousel.contains(document.activeElement);
 
     const stopCarousel = () => {
@@ -132,7 +157,11 @@
 
     document.addEventListener("visibilitychange", () => document.hidden ? stopCarousel() : startCarousel());
     reducedMotion.addEventListener("change", () => reducedMotion.matches ? stopCarousel() : startCarousel());
-    window.addEventListener("resize", normalizePosition, { passive: true });
+    coarsePointer.addEventListener("change", () => canAnimate() ? startCarousel() : stopCarousel());
+    window.addEventListener("resize", () => {
+      normalizePosition();
+      canAnimate() ? startCarousel() : stopCarousel();
+    }, { passive: true });
 
     if ("IntersectionObserver" in window) {
       const observer = new IntersectionObserver(([entry]) => {
@@ -163,10 +192,13 @@
 
       const valid = emailPattern.test(email);
       emailField.closest(".field").classList.toggle("has-error", !valid);
+      emailField.setAttribute("aria-invalid", String(!valid));
       emailError.textContent = valid ? "" : "Enter a valid email address.";
 
-      if (!name || !valid || !message) {
-        if (!valid) emailField.focus();
+      if (!name || !valid || !message || !form.checkValidity()) {
+        const firstInvalid = form.querySelector(":invalid");
+        form.reportValidity();
+        if (firstInvalid) firstInvalid.focus();
         note.textContent = "";
         return;
       }
@@ -183,6 +215,7 @@
       if (emailField.closest(".field").classList.contains("has-error")) {
         const valid = emailPattern.test(emailField.value.trim());
         emailField.closest(".field").classList.toggle("has-error", !valid);
+        emailField.setAttribute("aria-invalid", String(!valid));
         emailError.textContent = valid ? "" : "Enter a valid email address.";
       }
     });

@@ -3,10 +3,10 @@
 
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Manaram Farm — From Our Farm, in Motion</title>
   <meta name="description"
-    content="Manaram Farm makes dairy, spices, achar, sattu and everyday Nepali staples the way a family would — real ingredients, traditional methods, ISO-certified quality, since 2014." />
+    content="Manaram Farm makes dairy, spices, achar, sattu and everyday Nepali staples the way a family would: real ingredients, traditional methods, ISO-certified quality, since 2014." />
 
   <link rel="icon" href="../images/favicon.svg" type="image/svg+xml" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -46,7 +46,7 @@
     </div>
   </header>
 
-  <div class="mobile-nav" id="mobile-nav">
+  <div class="mobile-nav" id="mobile-nav" aria-hidden="true" inert>
     <button class="mobile-nav-close" aria-label="Close menu"><span></span><span></span></button>
     <img class="mobile-nav-logo" src="../images/logo-white.png" alt="Manaram Farm" width="593" height="180" />
     <nav aria-label="Mobile">
@@ -82,8 +82,8 @@
           <span class="word word-em"><span class="word-inner">family.</span></span>
         </h1>
         <p class="hero-sub reveal-fade" data-reveal-delay="1">
-          Manaram Farm grows, dries, and crafts everyday Nepali staples — dairy, spices,
-          achar, sattu and more — the same way our family always has. Not a factory line.
+          Manaram Farm grows, dries, and crafts everyday Nepali staples, from dairy and spices
+          to achar, sattu and more. We make them the way our family always has. Not a factory line.
         </p>
         <div class="hero-actions reveal-fade" data-reveal-delay="2">
           <a class="btn btn-primary btn-fun" href="#story" data-magnetic>Our Story</a>
@@ -151,8 +151,8 @@
       <div class="section-head reveal-fade" data-reveal>
         <h2 class="text-balance">One farm.<br>Twelve pantries.</h2>
         <p class="text-pretty">
-          Every category below traces back to the same hillside and the same standard —
-          browse the range we've built since 2014.
+          Every category below traces back to the same hillside and the same standard.
+          Browse the range we've built since 2014.
         </p>
       </div>
 
@@ -317,7 +317,7 @@
               <div class="belief-copy">
                 <h3>It begins with what the land gives us.</h3>
                 <p class="text-pretty">Milk from well-tended cows, grain from nearby fields, chili, herbs and
-                  spices grown the way they always have — every ingredient starts close to home, not from an
+                  spices grown the way they always have. Every ingredient starts close to home, not from an
                   anonymous supplier.</p>
               </div>
             </li>
@@ -325,7 +325,7 @@
               <span class="belief-index" aria-hidden="true">02</span>
               <div class="belief-copy">
                 <h3>One farm becomes a full household pantry.</h3>
-                <p class="text-pretty">Dairy, dried meat, achar, sattu, spices, grains, flours and tea — twelve
+                <p class="text-pretty">Dairy, dried meat, achar, sattu, spices, grains, flours and tea: twelve
                   product families made for everything from a morning glass of milk to a shelf of everyday
                   staples.</p>
               </div>
@@ -346,7 +346,7 @@
     <section class="buy" id="buy">
       <div class="buy-inner">
         <h2 class="text-balance reveal-fade" data-reveal>Ready when you are.</h2>
-        <p class="reveal-fade text-pretty" data-reveal>Manaram Farm ships through two trusted partners — pick
+        <p class="reveal-fade text-pretty" data-reveal>Manaram Farm ships through two trusted partners. Pick
           whichever is closer to home.</p>
 
         <div class="buy-cards">
@@ -400,7 +400,7 @@
       <div class="contact-grid">
         <div class="contact-info reveal-fade" data-reveal>
           <h2 class="text-balance">Come say namaste.</h2>
-          <p class="text-pretty">Questions, wholesale inquiries, or just want to know more about the farm — we
+          <p class="text-pretty">Questions, wholesale inquiries, or just want to know more about the farm? We
             read every message.</p>
 
           <ul class="contact-details">
@@ -451,7 +451,7 @@
           </div>
           <div class="field">
             <label for="email">Email</label>
-            <input type="email" id="email" name="email" autocomplete="email" required />
+            <input type="email" id="email" name="email" autocomplete="email" aria-describedby="email-error" required />
             <span class="field-error" id="email-error" role="alert"></span>
           </div>
           <div class="field">

@@ -15,28 +15,51 @@
   // Mobile nav
   const menuToggle = document.getElementById("menu-toggle");
   const mobileNav = document.getElementById("mobile-nav");
+  const mobileNavClose = mobileNav.querySelector(".mobile-nav-close");
+  const focusableSelector = 'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
-  const closeMenu = () => {
+  const closeMenu = (restoreFocus = true) => {
     menuToggle.setAttribute("aria-expanded", "false");
+    menuToggle.setAttribute("aria-label", "Open menu");
     mobileNav.classList.remove("is-open");
+    mobileNav.setAttribute("aria-hidden", "true");
+    mobileNav.inert = true;
     document.body.style.overflow = "";
+    if (restoreFocus) menuToggle.focus();
   };
   const openMenu = () => {
     menuToggle.setAttribute("aria-expanded", "true");
+    menuToggle.setAttribute("aria-label", "Close menu");
+    mobileNav.removeAttribute("aria-hidden");
+    mobileNav.inert = false;
     mobileNav.classList.add("is-open");
     document.body.style.overflow = "hidden";
+    mobileNavClose.focus();
   };
 
   menuToggle.addEventListener("click", () => {
     const isOpen = menuToggle.getAttribute("aria-expanded") === "true";
     isOpen ? closeMenu() : openMenu();
   });
-  mobileNav.querySelectorAll("a, button").forEach((el) => {
-    el.addEventListener("click", closeMenu);
-  });
+  mobileNavClose.addEventListener("click", () => closeMenu());
+  mobileNav.querySelectorAll("a").forEach((el) => el.addEventListener("click", () => closeMenu(false)));
   document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") closeMenu();
+    if (e.key === "Escape" && mobileNav.classList.contains("is-open")) closeMenu();
+    if (e.key !== "Tab" || !mobileNav.classList.contains("is-open")) return;
+    const focusable = [...mobileNav.querySelectorAll(focusableSelector)].filter((el) => !el.inert);
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
+    }
   });
+  window.addEventListener("resize", () => {
+    if (window.innerWidth >= 900 && mobileNav.classList.contains("is-open")) closeMenu(false);
+  }, { passive: true });
 
   // Footer year
   const yearEl = document.getElementById("year");
@@ -59,10 +82,13 @@
 
       const valid = emailPattern.test(email);
       emailField.closest(".field").classList.toggle("has-error", !valid);
+      emailField.setAttribute("aria-invalid", String(!valid));
       emailError.textContent = valid ? "" : "Enter a valid email address.";
 
-      if (!name || !valid || !message) {
-        if (!valid) emailField.focus();
+      if (!name || !valid || !message || !form.checkValidity()) {
+        const firstInvalid = form.querySelector(":invalid");
+        form.reportValidity();
+        if (firstInvalid) firstInvalid.focus();
         note.textContent = "";
         return;
       }
@@ -79,6 +105,7 @@
       if (emailField.closest(".field").classList.contains("has-error")) {
         const valid = emailPattern.test(emailField.value.trim());
         emailField.closest(".field").classList.toggle("has-error", !valid);
+        emailField.setAttribute("aria-invalid", String(!valid));
         emailError.textContent = valid ? "" : "Enter a valid email address.";
       }
     });
