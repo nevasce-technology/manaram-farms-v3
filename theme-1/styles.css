@@ -1214,6 +1214,7 @@ section { padding: var(--space-xl) var(--space-md); }
 
 @media (max-width: 640px) {
   .header-inner { padding: 1rem var(--space-sm); }
+  .hero-media img { object-position: 35% center; }
   .hero {
     padding-right: var(--space-sm);
     padding-bottom: max(5.5rem, calc(4.5rem + env(safe-area-inset-bottom)));

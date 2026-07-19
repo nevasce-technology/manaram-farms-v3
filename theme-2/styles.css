@@ -975,6 +975,7 @@ figure.reveal-fade, .quality-media.reveal-fade {
 @media (max-width: 640px) {
   :root { --space-xl: 5rem; --space-2xl: 6rem; }
   .header-inner { padding: 1rem var(--space-sm); }
+  .hero-media img { object-position: 35% center; }
   .hero-content {
     padding: 6.5rem var(--space-sm) max(6.5rem, calc(5.5rem + env(safe-area-inset-bottom)));
   }
